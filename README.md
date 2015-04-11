@@ -1,4 +1,4 @@
-# sshkeymanager
+# sshkeymanager [![Build Status](https://api.travis-ci.org/hggh/sshkeymanager-puppet.svg)](https://travis-ci.org/hggh/sshkeymanager-puppet)
 
 publish your SSH Key Manager configuration to your hosts via Puppet.
 
