@@ -88,7 +88,7 @@ To allow also user key in there own homedirectory you need to setup this:
   AuthorizedKeysFile /etc/sshkeymanager/%u .ssh/authorized_keys
 ```
 
-We suggest you to use the SSH moduel from forge:
+We suggest you to use the SSH module from forge:
 
 https://forge.puppetlabs.com/saz/ssh
 
