@@ -29,16 +29,16 @@ Puppet. This module requires to use the SSH Key Manager Application
 For your hosts to get the SSH Public Keys:
 
 ```
-   class { 'sshkeymanager':
-   }
+class { 'sshkeymanager':
+}
 ```
 
 For your Puppet Server/Master to create the JSON Hiera data directory:
 
 ```
-   class { 'sshkeymanager::puppet':
-     directory => '/etc/sshkeymanager-hiera',
-   }
+cass { 'sshkeymanager::puppet':
+  directory => '/etc/sshkeymanager-hiera',
+}
 ```
 
 
@@ -47,9 +47,9 @@ For your Puppet Server/Master to create the JSON Hiera data directory:
 ## Parameters
 
 ```
-   class { 'sshkeymanager':
-     directory => '/etc/sshkeymanager',
-   }
+class { 'sshkeymanager':
+  directory => '/etc/sshkeymanager',
+}
 ```
 
 Per default the `sshkeymanager` class uses the directory `/etc/sshkeymanager`.
@@ -60,17 +60,16 @@ You can change the directory to your needs.
 You need to add the json backend to your Hiera configuration:
 
 ```
-   ---
-   :backends:
-      - json
-      - yaml
-   :hierarchy:
-     - "%{clientcert}"
-     - "%{environment}"
-     - common
-   :json:
-     :datadir: '/etc/sshkeymanager-hiera/%{environment}'
-    
+---
+:backends:
+   - json
+   - yaml
+:hierarchy:
+  - "nodes/%{clientcert}"
+  - "%{environment}"
+  - common
+:json:
+  :datadir: '/etc/sshkeymanager-hiera/%{environment}'
 ```
 
 ## SSH configuration
@@ -79,23 +78,20 @@ You need to edit on all servers that uses the `sshkeymanager` class the
 SSHd configration to point to the directory there all keys are saved:
 
 ```
-  AuthorizedKeysFile /etc/sshkeymanager/%u 
+AuthorizedKeysFile /etc/sshkeymanager/%u 
 ```
 
 To allow also user key in there own homedirectory you need to setup this:
 
 ```
-  AuthorizedKeysFile /etc/sshkeymanager/%u .ssh/authorized_keys
+AuthorizedKeysFile /etc/sshkeymanager/%u .ssh/authorized_keys
 ```
 
-We suggest you to use the SSH module from forge:
-
-https://forge.puppetlabs.com/saz/ssh
-
+Using the SSH module(https://forge.puppetlabs.com/saz/ssh) from Puppet Forge it looks like:
 ```
-  class { 'ssh::server':
-     options => {
-       'AuthorizedKeysFile' => '/etc/sshkeymanager/%u',
-     }
+class { 'ssh::server':
+  options => {
+    'AuthorizedKeysFile' => '/etc/sshkeymanager/%u',
   }
+}
 ```
