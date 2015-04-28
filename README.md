@@ -2,7 +2,7 @@
 
 publish your SSH Key Manager configuration to your hosts via Puppet.
 
-Source: https://github.com/hggh/sshkeymanager-puppet
+you need the SSH Key Manager Django Webapp: https://github.com/hggh/sshkeymanager-django
 
 #### Table of Contents
 
