@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'uri'
+require 'yaml'
+require 'optparse'
+require 'timeout'
+require 'net/http'
+
+options = {}
+options[:config] = "/etc/sshkeymanager.yaml"
+options[:timeout] = 10
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} [options]"
+
+  opts.on("-c", "--config [STRING]", "path to config" ) do |o|
+    options[:config] = o
+  end
+end.parse!
+
+if !options[:config]
+  puts "Please add path to configuration!"
+  exit(1)
+end
+
+unless File.readable?(options[:config])
+  puts "Could not read configuration file #{options[:config]}"
+  exit(1)
+end
+
+begin
+  config = YAML.load(File.open(options[:config]).read)
+rescue Exception => e
+  puts "Error on reading YAML configuration file: #{e.message}"
+  exit(1)
+end
+
+if !config['address'] or ! config['apikey'] or !config['storepath']
+  puts "Could not read address or apikey option"
+  exit(1)
+end
+
+response = nil
+begin
+  Timeout::timeout(options[:timeout]) do
+    uri = URI(config['address'])
+    Net::HTTP.start(uri.host, uri.port) { |http|
+      response = http.post(uri.path, 'API_KEY=' + config['apikey'])
+    }
+  end
+rescue Timeout::Error => e
+  puts "Timout on http request to: #{config['address']}"
+  exit(1)
+end
+
+if response and response.code != "200"
+  puts "No http 200 status code: #{response.code.to_s}"
+  puts response.body
+  exit(1)
+end
+
+json = nil
+begin
+  json = JSON.parse(response.body)
+rescue Exception => e
+  puts "Could not decode JSON: #{e.message}"
+  exit(1)
+end
+
+if json
+  json.each do |key,value|
+    puts value["environment"]
+  end
+end
+
