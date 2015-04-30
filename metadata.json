@@ -1,6 +1,6 @@
 {
   "name": "hggh-sshkeymanager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "hggh",
   "summary": "publish your SSH Public Key configuration from SSH Key Manager to your hosts",
   "license": "GPL",
