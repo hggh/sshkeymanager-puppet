@@ -38,6 +38,7 @@ on your puppet master server the keys should exported. This class installs the a
 ```
 class { 'sshkeymanager::puppet':
   directory => '/etc/sshkeymanager-hiera',
+  storepath => '/etc/sshkeymanager-hiera/{environment}/nodes/{fqdn}.json',
   apikey    => 'your-api-key-from-django',
   address   => 'http://localhost:8000/api/getkeys/',
 }
