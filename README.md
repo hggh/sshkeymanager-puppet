@@ -33,11 +33,13 @@ class { 'sshkeymanager':
 }
 ```
 
-For your Puppet Server/Master to create the JSON Hiera data directory:
+on your puppet master server the keys should exported. This class installs the api client programm, the cronjob and the directories:
 
 ```
 class { 'sshkeymanager::puppet':
   directory => '/etc/sshkeymanager-hiera',
+  apikey    => 'your-api-key-from-django',
+  address   => 'http://localhost:8000/api/getkeys/',
 }
 ```
 
