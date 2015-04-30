@@ -36,7 +36,7 @@ class { 'sshkeymanager':
 For your Puppet Server/Master to create the JSON Hiera data directory:
 
 ```
-cass { 'sshkeymanager::puppet':
+class { 'sshkeymanager::puppet':
   directory => '/etc/sshkeymanager-hiera',
 }
 ```
