@@ -6,6 +6,7 @@ require 'yaml'
 require 'optparse'
 require 'timeout'
 require 'net/http'
+require 'fileutils'
 
 options = {}
 options[:config] = "/etc/sshkeymanager.yaml"
@@ -70,7 +71,23 @@ end
 
 if json
   json.each do |key,value|
-    puts value["environment"]
+    filename = config['storepath'].to_s.sub('{environment}', value['environment']).sub('{fqdn}', key)
+    directory = File.dirname(filename)
+
+    # transform json from API into Hiera hash
+    output = { 'sshkeymanager' => {} }
+    value["accounts"].each do |account,keys|
+      output['sshkeymanager'][account] = {
+        'keys' => keys
+      }
+    end
+
+    FileUtils.mkdir_p(directory)
+    File.open(filename, 'w') { |f|
+      f.puts output.to_json
+    }
+    puts directory
+    puts filename
   end
 end
 
