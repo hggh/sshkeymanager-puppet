@@ -4,6 +4,8 @@ publish your SSH Key Manager configuration to your hosts via Puppet.
 
 you need the SSH Key Manager Django Webapp: https://github.com/hggh/sshkeymanager-django
 
+Vagrant Box available: https://github.com/hggh/sshkeymanager-vagrant
+
 #### Table of Contents
 
 1. [Overview](#overview)
@@ -26,12 +28,16 @@ Puppet. This module requires to use the SSH Key Manager Application
 
 ## Usage
 
-For your hosts to get the SSH Public Keys:
+### deployment of ssh public keys
+
+use the main class for deploy your ssh public keys to your hosts.
 
 ```
 class { 'sshkeymanager':
 }
 ```
+
+### export ssh public key configuration from webapp to the puppet master
 
 on your puppet master server the keys should exported. This class installs the api client programm, the cronjob and the directories:
 
@@ -44,8 +50,14 @@ class { 'sshkeymanager::puppet':
 }
 ```
 
+### install the django webapp with the puppet module
 
-
+```
+class { 'sshkeymanager::webapp':
+  django_secret_key => '23fdDfsd§sf#fdff§$3Ddd',
+  api_keys          => [ 'foobar', 'examplekey' ],
+}
+```
 
 ## Parameters
 
