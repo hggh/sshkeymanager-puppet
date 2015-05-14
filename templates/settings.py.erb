@@ -72,7 +72,7 @@ DATABASES = {
 # coniguration for PuppetDB access
 # configuration only needed if your are running puppetdb import of hosts/environments 
 
-<% if @puppetdb %>
+<% if @puppetdb and @puppetdb["HOST"] %>
 PUPPETDB = {
     'HOST': '<%= @puppetdb["HOST"] -%>',
     'PORT': <%= @puppetdb["PORT"] -%>,
