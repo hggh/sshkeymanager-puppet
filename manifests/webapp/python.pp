@@ -5,7 +5,8 @@ class sshkeymanager::webapp::python (
   $install_database_driver,
   $install_python3,
   $install_django,
-  $install_bootstrap3
+  $install_bootstrap3,
+  $install_model_utils
 ) {
 
   $database_driver_package_name = $database_driver ? {
@@ -37,6 +38,14 @@ class sshkeymanager::webapp::python (
     if ($install_bootstrap3) {
       package { 'django-bootstrap3':
         ensure   => '5.4.0',
+        provider => 'pip3',
+        require  => Package['Django'],
+      }
+    }
+
+    if ($install_model_utils) {
+      package { 'django-model-utils':
+        ensure   => '2.2',
         provider => 'pip3',
         require  => Package['Django'],
       }
