@@ -2,6 +2,8 @@
 
 class sshkeymanager::webapp(
   $django_secret_key,
+  $api_keys                = [],
+  $puppetdb                = {},
   $skm_version             = sshkeymanager::webapp::params::skm_version,
   $database_driver         = $sshkeymanager::webapp::params::database_driver,
   $install_database_driver = sshkeymanager::webapp::params::install_database_driver,
@@ -12,12 +14,15 @@ class sshkeymanager::webapp(
   $group                   = $sshkeymanager::webapp::params::group,
   $home                    = $sshkeymanager::webapp::params::home
 ) inherits sshkeymanager::webapp::params {
+  $install_dir = "${home}/skm-django"
 
   validate_string($database_driver)
   validate_string($django_secret_key)
   validate_bool($install_python3)
   validate_bool($install_django)
   validate_bool($install_bootstrap3)
+  validate_array($api_keys)
+  validate_hash($puppetdb)
 
   # install python3 / django / bootstrap3 dependency:
   class { 'sshkeymanager::webapp::python':
