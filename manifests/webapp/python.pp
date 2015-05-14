@@ -27,8 +27,8 @@ class sshkeymanager::webapp::python (
     }
 
     if ($install_django) {
-      package { 'django':
-        ensure   => '1.8.0',
+      package { 'Django':
+        ensure   => '1.8',
         provider => 'pip3',
         require  => Package['python3-pip'],
       }
@@ -38,7 +38,7 @@ class sshkeymanager::webapp::python (
       package { 'django-bootstrap3':
         ensure   => '5.4.0',
         provider => 'pip3',
-        require  => Package['django'],
+        require  => Package['Django'],
       }
     }
   }
